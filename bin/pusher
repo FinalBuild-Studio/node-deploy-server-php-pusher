@@ -3,25 +3,25 @@
 
 function opt($array)
 {
-		$data = [];
-		foreach ($array as $key => $value) {
-				$data[] = "{$key}:";
-		}
+    $data = [];
+    foreach ($array as $key => $value) {
+        $data[] = "{$key}:";
+    }
 
-		return $data;
+    return $data;
 }
 
 $default = [
-		"config"  => "",
-		"secret"  => "",
-		"dist" 	  => "",
-		"owner"   => "",
-		"repo"    => "",
-		"tag"		  => "",
-		"command" => "",
+    "config"  => "",
+    "secret"  => "",
+    "dist"    => "",
+    "owner"   => "",
+    "repo"    => "",
+    "tag"     => "",
+    "command" => "",
 ];
 
-$opt	   = getopt(null, opt($default));
+$opt     = getopt(null, opt($default));
 $setting = array_merge($default, $opt);
 $config  = $setting["config"];
 $secret  = $setting["secret"];
@@ -32,36 +32,36 @@ $tag     = $setting["tag"];
 $command = $setting["command"];
 
 if (!file_exists($config) && !($dist && $owner && $repo)) {
-		echo "I cannot find config file :(", PHP_EOL;
-		exit(1);
+    echo "I cannot find config file :(", PHP_EOL;
+    exit(1);
 }
 
 $raw = file_exists($config) ? file_get_contents($config) : json_encode($setting);
 
 if (($json = json_decode($raw, true)) && json_last_error() !== JSON_ERROR_NONE) {
-		echo "You have to assign a config file with json format", PHP_EOL;
-		exit(1);
+    echo "You have to assign a config file with json format", PHP_EOL;
+    exit(1);
 }
 
 foreach ($json as $jsonKey => $jsonValue) {
-		foreach ($setting as $settingKey => $settingValue) {
-				if ($settingKey === $jsonKey) {
-						$json[$jsonKey] = $settingValue ?: $jsonValue;
-				}
-		}
+    foreach ($setting as $settingKey => $settingValue) {
+        if ($settingKey === $jsonKey) {
+            $json[$jsonKey] = $settingValue ?: $jsonValue;
+        }
+    }
 }
 
 $raw = json_encode($json);
 
 if (!($json["dist"] && $json["owner"] && $json["repo"])) {
-		echo "`dist`, `owner`, `repo` is required in config.", PHP_EOL;
-		exit(1);
+    echo "`dist`, `owner`, `repo` is required in config.", PHP_EOL;
+    exit(1);
 }
 
 $hash = hash_hmac("sha1", $raw, $secret ?: getenv("SECRET"));
 
 $opts = [
-		"http" =>	[
+    "http" =>  [
         "method"  => "POST",
         "header"  => ["Content-type: application/json", "X-HUB-SIGNATURE: sha1={$hash}"],
         "content" => $raw
