@@ -13,9 +13,6 @@ function opt($array)
 
 $default = [
     "config"  => "",
-    "dist"    => "",
-    "owner"   => "",
-    "repo"    => "",
     "tag"     => "",
     "command" => "",
 ];
@@ -23,11 +20,15 @@ $default = [
 $opt     = getopt(null, opt($default));
 $setting = array_merge($default, $opt);
 $config  = $setting["config"];
-$dist    = $setting["dist"];
-$owner   = $setting["owner"];
-$repo    = $setting["repo"];
 $tag     = $setting["tag"];
 $command = $setting["command"];
+$travis  = getenv("TRAVIS_REPO_SLUG") ?: "/";
+
+list($owner, $repo) = explode("/", $travis);
+
+$dist  = getenv("DIST");
+$owner = getenv("OWNER") ?: $owner;
+$repo  = getenv("REPO") ?: $repo;
 
 if (!file_exists($config) && !($dist && $owner && $repo)) {
     echo "I cannot find config file :(", PHP_EOL;
@@ -49,10 +50,14 @@ foreach ($json as $jsonKey => $jsonValue) {
     }
 }
 
+$json["dist"]  = $dist;
+$json["owner"] = $owner;
+$json["repo"]  = $repo;
+
 $raw = json_encode($json);
 
 if (!($json["dist"] && $json["owner"] && $json["repo"])) {
-    echo "`dist`, `owner`, `repo` is required in config.", PHP_EOL;
+    echo "`DIST`, `OWNER`, `REPO` is required in env.", PHP_EOL;
     exit(1);
 }
 
