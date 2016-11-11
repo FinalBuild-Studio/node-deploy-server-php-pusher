@@ -67,4 +67,4 @@ $opts = [
 ];
 
 $context = stream_context_create($opts);
-return file_get_contents("http://127.0.0.1:3000", false, $context);
+return file_get_contents(getenv("DEPLOY_HOST"), false, $context);
