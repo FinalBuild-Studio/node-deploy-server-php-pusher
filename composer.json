@@ -8,5 +8,7 @@
             "email": "michael34435@capslock.tw"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=7.0.0"
+    }
 }
