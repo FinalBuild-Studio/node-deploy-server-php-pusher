@@ -1,5 +1,5 @@
 {
-    "name": "capslock-lock/node-deploy-server-php-pusher",
+    "name": "capslock-studio/node-deploy-server-php-pusher",
     "description": "A deployment tool for node-deploy-server written in PHP.",
     "license": "MIT",
     "authors": [
