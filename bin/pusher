@@ -12,12 +12,13 @@ function opt($array)
 }
 
 $default = [
-		"config" => "",
-		"secret" => "",
-		"dist" 	 => "",
-		"owner"  => "",
-		"repo"   => "",
-		"tag"		 => "",
+		"config"  => "",
+		"secret"  => "",
+		"dist" 	  => "",
+		"owner"   => "",
+		"repo"    => "",
+		"tag"		  => "",
+		"command" => "",
 ];
 
 $opt	   = getopt(null, opt($default));
@@ -28,6 +29,7 @@ $dist    = $setting["dist"];
 $owner   = $setting["owner"];
 $repo    = $setting["repo"];
 $tag     = $setting["tag"];
+$command = $setting["command"];
 
 if (!file_exists($config) && !($dist && $owner && $repo)) {
 		echo "I cannot find config file :(", PHP_EOL;
