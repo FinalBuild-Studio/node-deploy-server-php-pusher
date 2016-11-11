@@ -13,7 +13,6 @@ function opt($array)
 
 $default = [
 		"config" => "",
-		"secret" => "",
 		"dist" 	 => "",
 		"owner"  => "",
 		"repo"   => "",
@@ -23,7 +22,6 @@ $default = [
 $opt	   = getopt(null, opt($default));
 $setting = array_merge($default, $opt);
 $config  = $setting["config"];
-$secret  = $setting["secret"];
 $dist    = $setting["dist"];
 $owner   = $setting["owner"];
 $repo    = $setting["repo"];
@@ -56,7 +54,7 @@ if (!($json["dist"] && $json["owner"] && $json["repo"])) {
 		exit(1);
 }
 
-$hash = hash_hmac("sha1", $raw, $secret ?: getenv("SECRET"));
+$hash = hash_hmac("sha1", $raw, getenv("SECRET"));
 
 $opts = [
 		"http" =>	[
