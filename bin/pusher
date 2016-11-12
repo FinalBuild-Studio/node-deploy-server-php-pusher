@@ -65,7 +65,7 @@ $json["dist"]  = $dist;
 $json["owner"] = $owner;
 $json["repo"]  = $repo;
 
-$raw = json_encode($json);
+$raw = json_encode($json, JSON_UNESCAPED_SLASHES);
 
 if (!($json["dist"] && $json["owner"] && $json["repo"])) {
     echo "`DIST`, `OWNER`, `REPO` is required in env.", PHP_EOL;
@@ -82,5 +82,9 @@ $opts = [
     ]
 ];
 
-$context = stream_context_create($opts);
-return file_get_contents(getenv("DEPLOY_HOST"), false, $context);
+try {
+    $context = stream_context_create($opts);
+    file_get_contents(getenv("DEPLOY_HOST"), false, $context);
+} catch (Exception $e) {
+    exit(1);
+}
