@@ -17,6 +17,7 @@ $default = [
     "command" => "",
 ];
 
+$wrapper = stream_get_wrappers();
 $opt     = getopt(null, opt($default));
 $setting = array_merge($default, $opt);
 $config  = $setting["config"];
@@ -29,6 +30,16 @@ list($owner, $repo) = explode("/", $travis);
 $dist  = getenv("DIST");
 $owner = getenv("OWNER") ?: $owner;
 $repo  = getenv("REPO") ?: $repo;
+
+if (!in_array("http", $wrapper)) {
+    echo "HTTP wrapper is required", PHP_EOL;
+    exit(1);
+}
+
+if (!in_array("https", $wrapper)) {
+    echo "HTTPS Wrapper is required.", PHP_EOL;
+    exit(1);
+}
 
 if (!file_exists($config) && !($dist && $owner && $repo)) {
     echo "I cannot find config file :(", PHP_EOL;
