@@ -53,7 +53,7 @@ foreach ($deploy as $host) {
 if ($failed && !$rollback) {
     $json["tag"] = false;
     foreach ($success as $host) {
-        (new Context())->set($json)->execute($host)->getHeder();
+        (new Context())->set($json)->execute($host);
     }
 
     exit(1);
