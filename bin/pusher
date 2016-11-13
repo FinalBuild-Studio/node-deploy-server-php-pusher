@@ -106,8 +106,6 @@ foreach ($hosts as $host) {
     echo "host: {$host}, deploying ...", PHP_EOL;
     $context  = stream_context_create($opts);
     $response = @file_get_contents($host, false, $context);
-    $response = json_decode($response);
-    $tag      = isset($response->last) ? $response->last : "";
     $header   = isset($http_response_header) ? $http_response_header[0] : "";
     preg_match("/^HTTP\/\d.\d (\d)\d+ [A-Za-z0-9]+$/", $header, $match);
     $code     = $match ? array_pop($match) : "6";
