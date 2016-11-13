@@ -50,7 +50,7 @@ foreach ($deploy as $host) {
     }
 }
 
-if ($failed && !$rollback) {
+if ($failed && !$json["rollback"]) {
     $json["tag"] = false;
     foreach ($success as $host) {
         (new Context())->set($json)->execute($host);
