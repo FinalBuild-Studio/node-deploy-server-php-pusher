@@ -17,7 +17,6 @@ class Secret
         $json = json_decode(json_encode($json));
         $json = json_encode($json, JSON_UNESCAPED_SLASHES);
 
-
         return hash_hmac("sha1", $json, $this->secret);
     }
 }
