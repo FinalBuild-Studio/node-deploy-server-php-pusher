@@ -70,13 +70,7 @@ $json["dist"]  = $dist;
 $json["owner"] = $owner;
 $json["repo"]  = $repo;
 
-$raw = json_encode($json, JSON_UNESCAPED_SLASHES);
-
-if (!($json["dist"] && $json["owner"] && $json["repo"])) {
-    echo "`DIST`, `OWNER`, `REPO` is required in env.", PHP_EOL;
-    exit(1);
-}
-
+$raw  = json_encode($json, JSON_UNESCAPED_SLASHES);
 $hash = hash_hmac("sha1", $raw, getenv("SECRET"));
 
 $baseOpts = [
@@ -98,9 +92,12 @@ $opts["http"]["content"]  = $raw;
 $success = [];
 $failed  = [];
 $lost    = [];
-$deploy  = getenv("DEPLOY_HOST") ?: "[]";
-$hosts   = json_decode($deploy, true);
-$hosts   = JSON_ERROR_NONE !== json_last_error() ? [$deploy] : $hosts;
+$match   = [];
+$deploy  = getenv("DEPLOY_HOST") ?: "";
+$deploy  = explode(",", $deploy);
+
+$hosts = json_decode(json_encode($deploy), true);
+$hosts = JSON_ERROR_NONE === json_last_error() ? $hosts : [$deploy];
 
 foreach ($hosts as $host) {
     echo "host: {$host}, deploying ...", PHP_EOL;
