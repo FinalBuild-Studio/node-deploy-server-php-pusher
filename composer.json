@@ -8,6 +8,12 @@
             "email": "michael34435@capslock.tw"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "CapsLockStudio\\Deploy\\Pusher\\": "src"
+        }
+    },
+    "prefer-stable": true,
     "require": {
         "php": ">=5.6.0"
     }

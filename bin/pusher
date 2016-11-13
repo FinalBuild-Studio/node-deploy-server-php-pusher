@@ -1,40 +1,14 @@
 #!/usr/bin/env php
 <?php
 
-function opt($array)
-{
-    $data = [];
-    foreach ($array as $key => $value) {
-        $data[] = $key . (is_bool($value) ? "" : ":");
-    }
+require __DIR__ . "/../vendor/autoload.php";
 
-    return $data;
-}
+use CapsLockStudio\Deploy\Pusher\Option;
+use CapsLockStudio\Deploy\Pusher\Context;
 
-$default = [
-    "config"   => "",
-    "tag"      => "",
-    "command"  => "",
-    "rollback" => true,
-];
-
-$wrapper  = stream_get_wrappers();
-$opt      = getopt(null, opt($default));
-$setting  = array_merge($default, $opt);
-$config   = $setting["config"];
-$tag      = $setting["tag"];
-$command  = $setting["command"];
-
-$setting["rollback"] = !$setting["rollback"];
-$setting["tag"]      = $setting["rollback"] ? false : $tag;
-
-$travis = getenv("TRAVIS_REPO_SLUG") ?: "/";
-
-list($owner, $repo) = explode("/", $travis);
-
-$dist  = getenv("DIST");
-$owner = getenv("OWNER") ?: $owner;
-$repo  = getenv("REPO") ?: $repo;
+$wrapper = stream_get_wrappers();
+$option  = new Option();
+$json    = $option->get();
 
 if (!in_array("http", $wrapper)) {
     echo "HTTP wrapper is required", PHP_EOL;
@@ -46,71 +20,27 @@ if (!in_array("https", $wrapper)) {
     exit(1);
 }
 
-if (!file_exists($config) && !($dist && $owner && $repo)) {
+if (!($json["dist"] && $json["owner"] && $json["repo"])) {
     echo "I cannot find config file :(", PHP_EOL;
     exit(1);
 }
 
-$raw = file_exists($config) ? file_get_contents($config) : json_encode($setting);
-
-if (($json = json_decode($raw, true)) && json_last_error() !== JSON_ERROR_NONE) {
-    echo "You have to assign a config file with json format", PHP_EOL;
-    exit(1);
-}
-
-foreach ($json as $jsonKey => $jsonValue) {
-    foreach ($setting as $settingKey => $settingValue) {
-        if ($settingKey === $jsonKey) {
-            $json[$jsonKey] = $settingValue === "" ? $jsonValue : $settingValue;
-        }
-    }
-}
-
-$json["dist"]  = $dist;
-$json["owner"] = $owner;
-$json["repo"]  = $repo;
-
-$raw  = json_encode($json, JSON_UNESCAPED_SLASHES);
-$hash = hash_hmac("sha1", $raw, getenv("SECRET"));
-
-$baseOpts = [
-    "http" =>  [
-        "method"        => "POST",
-        "header"        => [
-            "Content-type: application/json",
-        ],
-        "ignore_errors" => true
-    ]
-];
-
-$iterator = new ArrayIterator($baseOpts);
-$opts     = $iterator->getArrayCopy();
-
-$opts["http"]["header"][] = "x-hub-signature: sha1={$hash}";
-$opts["http"]["content"]  = $raw;
-
 $success = [];
 $failed  = [];
 $lost    = [];
-$match   = [];
 $deploy  = getenv("DEPLOY_HOST") ?: "";
 $deploy  = explode(",", $deploy);
 
-foreach ($hosts as $host) {
+foreach ($deploy as $host) {
     echo "host: {$host}, deploying ...", PHP_EOL;
-    $context  = stream_context_create($opts);
-    $response = @file_get_contents($host, false, $context);
-    $header   = isset($http_response_header) ? $http_response_header[0] : "";
-    preg_match("/^HTTP\/\d.\d (\d)\d+ [A-Za-z0-9]+$/", $header, $match);
-    $code     = $match ? array_pop($match) : "6";
-
-    switch ($code) {
-        case "4":
-        case "5":
+    $header = (new Context())->set($json)->execute($host)->getHeder();
+    switch (true) {
+        case $header->isFatal():
+        case $header->isError():
             $failed[] = $host;
             break;
 
-        case "6":
+        case $header->isTimeout():
             $lost[] = $host;
             break;
 
@@ -123,15 +53,7 @@ foreach ($hosts as $host) {
 if ($failed && !$rollback) {
     $json["tag"] = false;
     foreach ($success as $host) {
-        $raw  = json_encode($json, JSON_UNESCAPED_SLASHES);
-        $hash = hash_hmac("sha1", $raw, getenv("SECRET"));
-        $opts = $iterator->getArrayCopy();
-
-        $opts["http"]["header"][] = "x-hub-signature: sha1={$hash}";
-        $opts["http"]["content"]  = $raw;
-
-        $context = stream_context_create($opts);
-        @file_get_contents($host, false, $context);
+        (new Context())->set($json)->execute($host)->getHeder();
     }
 
     exit(1);
