@@ -39,7 +39,7 @@ class Option
         return $json;
     }
 
-    public function keys(array $array)
+    private function keys(array $array)
     {
         $data = [];
         foreach ($array as $key => $value) {
