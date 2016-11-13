@@ -2,6 +2,8 @@
 
 namespace CapsLockStudio\Deploy\Pusher;
 
+use CapsLockStudio\Deploy\Pusher\Option\Git;
+
 class Option
 {
 

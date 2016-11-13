@@ -1,6 +1,6 @@
 <?php
 
-namespace CapsLockStudio\Deploy\Pusher;
+namespace CapsLockStudio\Deploy\Pusher\Context;
 
 class Header
 {

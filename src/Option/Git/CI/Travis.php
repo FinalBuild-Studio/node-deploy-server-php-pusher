@@ -1,17 +1,14 @@
 <?php
 
-namespace CapsLockStudio\Deploy\Pusher\Git\CI;
+namespace CapsLockStudio\Deploy\Pusher\Option\Git\CI;
 
-class Jenkins
+class Travis
 {
     private $owner;
     private $repo;
 
     public function __construct($repo)
     {
-        preg_match("/(\w+:\/\/)(.+@)*([\w\d\.]+)(:[\d]+){0,1}\/*(.*)/", $repo, $match);
-        $repo = array_pop($match);
-        $repo = preg_replace("/\.git$/", "", $repo);
         list($this->owner, $this->repo) = explode("/", $repo);
     }
 

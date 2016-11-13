@@ -1,6 +1,9 @@
 <?php
 
-namespace CapsLockStudio\Deploy\Pusher;
+namespace CapsLockStudio\Deploy\Pusher\Option;
+
+use CapsLockStudio\Deploy\Pusher\Option\Git\CI\Travis;
+use CapsLockStudio\Deploy\Pusher\Option\Git\CI\Jenkins;
 
 class Git
 {
@@ -8,9 +11,9 @@ class Git
     public static function create()
     {
         if ($repo = getenv("TRAVIS_REPO_SLUG")) {
-            return new Git\CI\Travis($repo);
+            return new Travis($repo);
         } elseif ($repo = getenv("GIT_URL")) {
-            return new Git\CI\Jenkins($repo);
+            return new Jenkins($repo);
         }
 
         return new self;

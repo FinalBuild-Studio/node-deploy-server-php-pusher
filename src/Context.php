@@ -2,6 +2,9 @@
 
 namespace CapsLockStudio\Deploy\Pusher;
 
+use CapsLockStudio\Deploy\Pusher\Context\Secret;
+use CapsLockStudio\Deploy\Pusher\Context\Header;
+
 class Context
 {
 
