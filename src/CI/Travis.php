@@ -1,6 +1,6 @@
 <?php
 
-namespace CapsLockStudio\Deploy\Pusher\CI;
+namespace CapsLockStudio\Deploy\Pusher\Git;
 
 class Travis
 {

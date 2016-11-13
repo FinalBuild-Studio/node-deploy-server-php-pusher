@@ -1,8 +1,8 @@
 <?php
 
-namespace CapsLockStudio\Deploy\Pusher\CI;
+namespace CapsLockStudio\Deploy\Pusher\Git;
 
-class Git
+class Jenkins
 {
     private $owner;
     private $repo;

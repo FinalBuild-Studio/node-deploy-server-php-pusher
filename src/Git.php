@@ -2,15 +2,15 @@
 
 namespace CapsLockStudio\Deploy\Pusher;
 
-class CI
+class Git
 {
 
     public static function create()
     {
         if ($repo = getenv("TRAVIS_REPO_SLUG")) {
-            return new CI\Travis($repo);
+            return new Git\Travis($repo);
         } elseif ($repo = getenv("GIT_URL")) {
-            return new CI\Git($repo);
+            return new Git\Jenkins($repo);
         }
 
         return new self;
