@@ -1,6 +1,6 @@
 <?php
 
-namespace CapsLockStudio\Deploy\Pusher\Git;
+namespace CapsLockStudio\Deploy\Pusher\Git\CI;
 
 class Jenkins
 {
