@@ -23,9 +23,8 @@ class Option
         $opt  = file_exists($opt["config"]) ? file_get_contents($opt["config"]) : json_encode($opt);
         $json = json_decode($opt, true) ?: [];
 
-        $travis = getenv("TRAVIS_REPO_SLUG") ?: "/";
-
-        list($owner, $repo) = explode("/", $travis);
+        $owner = CI::create()->getOwner();
+        $repo  = CI::create()->getRepo();
 
         $dist  = getenv("DIST");
         $owner = getenv("OWNER") ?: $owner;

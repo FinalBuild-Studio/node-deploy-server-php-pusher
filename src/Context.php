@@ -2,7 +2,6 @@
 
 namespace CapsLockStudio\Deploy\Pusher;
 
-
 class Context
 {
 
@@ -32,7 +31,7 @@ class Context
 
         $this->opts["http"]["header"][] = "x-hub-signature: sha1={$hash}";
         $this->opts["http"]["content"]  = json_encode($json);
-
+        var_dump($this->opts);
         return $this;
     }
 
@@ -40,7 +39,7 @@ class Context
     {
         $context      = stream_context_create($this->opts);
         $response     = @file_get_contents($host, false, $context);
-        $this->header = isset($http_response_header) ? $http_response_header[0] : "";
+        $this->header = !empty($http_response_header) ? $http_response_header[0] : "";
 
         return $this;
     }

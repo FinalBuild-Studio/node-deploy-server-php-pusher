@@ -11,4 +11,5 @@ DEPLOY_HOST={DEFINE_YOUR_NODE_DEPLOY_SERVER} SECRET={DEFINE_YOUR_SECRET} DIST={R
 ```
 
 ### Other
-It's compatible with travis, you have to assign `REPO` and `OWNER` in other CI tool.
+It's compatible with `Travis` and `Jenkins` by default.  
+You have to assign `REPO` and `OWNER` in other CI tool.
