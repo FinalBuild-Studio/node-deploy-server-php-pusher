@@ -5,25 +5,30 @@ function opt($array)
 {
     $data = [];
     foreach ($array as $key => $value) {
-        $data[] = "{$key}:";
+        $data[] = $key . (is_bool($value) ? "" : ":");
     }
 
     return $data;
 }
 
 $default = [
-    "config"  => "",
-    "tag"     => "",
-    "command" => "",
+    "config"   => "",
+    "tag"      => "",
+    "command"  => "",
+    "rollback" => true,
 ];
 
-$wrapper = stream_get_wrappers();
-$opt     = getopt(null, opt($default));
-$setting = array_merge($default, $opt);
-$config  = $setting["config"];
-$tag     = $setting["tag"];
-$command = $setting["command"];
-$travis  = getenv("TRAVIS_REPO_SLUG") ?: "/";
+$wrapper  = stream_get_wrappers();
+$opt      = getopt(null, opt($default));
+$setting  = array_merge($default, $opt);
+$config   = $setting["config"];
+$tag      = $setting["tag"];
+$command  = $setting["command"];
+
+$setting["rollback"] = !$setting["rollback"];
+$setting["tag"]      = $setting["rollback"] ? false : $tag;
+
+$travis = getenv("TRAVIS_REPO_SLUG") ?: "/";
 
 list($owner, $repo) = explode("/", $travis);
 
@@ -56,7 +61,7 @@ if (($json = json_decode($raw, true)) && json_last_error() !== JSON_ERROR_NONE) 
 foreach ($json as $jsonKey => $jsonValue) {
     foreach ($setting as $settingKey => $settingValue) {
         if ($settingKey === $jsonKey) {
-            $json[$jsonKey] = $settingValue ?: $jsonValue;
+            $json[$jsonKey] = $settingValue === "" ? $jsonValue : $settingValue;
         }
     }
 }
@@ -74,17 +79,68 @@ if (!($json["dist"] && $json["owner"] && $json["repo"])) {
 
 $hash = hash_hmac("sha1", $raw, getenv("SECRET"));
 
-$opts = [
+$baseOpts = [
     "http" =>  [
-        "method"  => "POST",
-        "header"  => ["Content-type: application/json", "X-HUB-SIGNATURE: sha1={$hash}"],
-        "content" => $raw
+        "method"        => "POST",
+        "header"        => [
+            "Content-type: application/json",
+        ],
+        "ignore_errors" => true
     ]
 ];
 
-try {
-    $context = stream_context_create($opts);
-    file_get_contents(getenv("DEPLOY_HOST"), false, $context);
-} catch (Exception $e) {
+$iterator = new ArrayIterator($baseOpts);
+$opts     = $iterator->getArrayCopy();
+
+$opts["http"]["header"][] = "x-hub-signature: sha1={$hash}";
+$opts["http"]["content"]  = $raw;
+
+$success = [];
+$failed  = [];
+$lost    = [];
+$deploy  = getenv("DEPLOY_HOST") ?: "[]";
+$hosts   = json_decode($deploy, true);
+$hosts   = JSON_ERROR_NONE !== json_last_error() ? [$deploy] : $hosts;
+
+foreach ($hosts as $host) {
+    echo "host: {$host}, deploying ...", PHP_EOL;
+    $context  = stream_context_create($opts);
+    $response = @file_get_contents($host, false, $context);
+    $response = json_decode($response);
+    $tag      = isset($response->last) ? $response->last : "";
+    $header   = isset($http_response_header) ? $http_response_header[0] : "";
+    preg_match("/^HTTP\/\d.\d (\d)\d+ [A-Za-z0-9]+$/", $header, $match);
+    $code     = $match ? array_pop($match) : "6";
+
+    switch ($code) {
+        case "4":
+        case "5":
+            $failed[] = $host;
+            break;
+
+        case "6":
+            $lost[] = $host;
+            break;
+
+        default:
+            $success[] = $host;
+            break;
+    }
+}
+
+if ($failed && !$rollback) {
+    $json["tag"] = false;
+    foreach ($success as $host) {
+        $raw  = json_encode($json, JSON_UNESCAPED_SLASHES);
+        $hash = hash_hmac("sha1", $raw, getenv("SECRET"));
+        $opts = $iterator->getArrayCopy();
+
+        $opts["http"]["header"][] = "x-hub-signature: sha1={$hash}";
+        $opts["http"]["content"]  = $raw;
+
+        $context = stream_context_create($opts);
+        @file_get_contents($host, false, $context);
+    }
+
     exit(1);
 }
