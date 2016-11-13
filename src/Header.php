@@ -16,7 +16,7 @@ class Header
     public function __construct($header)
     {
         preg_match("/^HTTP\/\d.\d (\d)\d+ [A-Za-z0-9]+$/", $header, $match);
-        $this->code = $match ? array_pop($match) : TIMEOUT;
+        $this->code = $match ? array_pop($match) : self::TIMEOUT;
     }
 
     public function isError()
