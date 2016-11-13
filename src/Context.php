@@ -31,7 +31,7 @@ class Context
 
         $this->opts["http"]["header"][] = "x-hub-signature: sha1={$hash}";
         $this->opts["http"]["content"]  = json_encode($json);
-        var_dump($this->opts);
+
         return $this;
     }
 
