@@ -3,6 +3,8 @@
 ### Installation
 ```sh
 composer global require capslock-studio/node-deploy-server-php-pusher dev-master
+
+ln -s $HOME/.composer/vendor/bin/deploy-pusher /usr/local/bin/deploy-pusher
 ```
 
 ### How to use
