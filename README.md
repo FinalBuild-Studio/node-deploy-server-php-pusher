@@ -12,7 +12,7 @@ ln -s $HOME/.composer/vendor/bin/deploy-pusher /usr/local/bin/deploy-pusher
 DEPLOY_HOST={DEFINE_YOUR_NODE_DEPLOY_SERVER} SECRET={DEFINE_YOUR_SECRET} DIST={REMOTE_SERVER_DEPLOY_PATH} deploy-pusher [PARAMETER_WITH_DOUBLE_DASH]
 ```
 
-### Support CI platform
+### Supported CI platform
 * TravisCI
 * Jenkins
 * CircleCI
