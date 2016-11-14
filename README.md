@@ -7,9 +7,13 @@ composer require capslock-studio/node-deploy-server-php-pusher dev-master
 
 ### How to use
 ```sh
-DEPLOY_HOST={DEFINE_YOUR_NODE_DEPLOY_SERVER} SECRET={DEFINE_YOUR_SECRET} DIST={REMOTE_SERVER_DEPLOY_PATH} ./vendor/capslock-studio/node-deploy-server-php-pusher/bin/pusher [PARAMETER_WITH_DOUBLE_DASH]
+DEPLOY_HOST={DEFINE_YOUR_NODE_DEPLOY_SERVER} SECRET={DEFINE_YOUR_SECRET} DIST={REMOTE_SERVER_DEPLOY_PATH} deploy-pusher [PARAMETER_WITH_DOUBLE_DASH]
 ```
 
-### Other
-It's compatible with `Travis` and `Jenkins` by default.  
-You have to assign `REPO` and `OWNER` in other CI tool.
+### Support CI platform
+* TravisCI
+* Jenkins
+* CircleCI
+
+### Other CI platform
+You have to assign `REPO` and `OWNER` to your environment variable in other CI tool.

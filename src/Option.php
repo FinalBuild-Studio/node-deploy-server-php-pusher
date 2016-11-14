@@ -25,12 +25,10 @@ class Option
         $opt  = file_exists($opt["config"]) ? file_get_contents($opt["config"]) : json_encode($opt);
         $json = json_decode($opt, true) ?: [];
 
-        $owner = Git::create()->getOwner();
-        $repo  = Git::create()->getRepo();
+        $owner = Git::extract()->getOwner();
+        $repo  = Git::extract()->getRepo();
 
-        $dist  = getenv("DIST");
-        $owner = getenv("OWNER") ?: $owner;
-        $repo  = getenv("REPO") ?: $repo;
+        $dist = getenv("DIST");
 
         $json["dist"]  = $dist;
         $json["owner"] = $owner;
