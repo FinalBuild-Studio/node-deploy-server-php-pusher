@@ -1,6 +1,6 @@
 {
     "name": "capslock-studio/node-deploy-server-php-pusher",
-    "description": "Lightweight cross platform hosted continuously integration solution client in PHP. ",
+    "description": "Lightweight cross platform self-hosted continuously integration solution client in PHP.",
     "license": "MIT",
     "authors": [
         {
