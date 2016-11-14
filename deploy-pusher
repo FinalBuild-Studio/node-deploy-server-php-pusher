@@ -11,8 +11,7 @@ use CapsLockStudio\Deploy\Pusher\Option;
 use CapsLockStudio\Deploy\Pusher\Context;
 
 $wrapper = stream_get_wrappers();
-$option  = new Option();
-$json    = $option->get();
+$json    = (new Option())->get();
 
 if (!in_array("http", $wrapper)) {
     echo "HTTP wrapper is required", PHP_EOL;
