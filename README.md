@@ -2,7 +2,7 @@
 
 ### Installation
 ```sh
-composer require capslock-studio/node-deploy-server-php-pusher dev-master
+composer global require capslock-studio/node-deploy-server-php-pusher dev-master
 ```
 
 ### How to use
