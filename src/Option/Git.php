@@ -10,6 +10,12 @@ class Git
     private $owner;
     private $repo;
 
+    public function __construct($owner, $repo)
+    {
+        $this->owner = $owner;
+        $this->repo  = $repo;
+    }
+
     public static function extract()
     {
         $repo = getenv("TRAVIS_REPO_SLUG");
@@ -22,12 +28,12 @@ class Git
             $repo = preg_replace("/\.git$/", "", $repo);
         }
 
-        list($this->owner, $this->repo) = explode("/", $repo);
+        list($owner, $repo) = explode("/", $repo);
 
-        $this->owner = $this->owner ?: getenv("OWNER");
-        $this->repo  = $this->repo ?: getenv("REPO");
+        $owner = $owner ?: getenv("OWNER");
+        $repo  = $repo ?: getenv("REPO");
 
-        return new self;
+        return new self($owner, $repo);
     }
 
     public function getOwner()
