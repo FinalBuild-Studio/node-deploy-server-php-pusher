@@ -3,6 +3,8 @@
 ### Installation
 ```sh
 composer global require capslock-studio/node-deploy-server-php-pusher dev-master
+
+ln -s $HOME/.composer/vendor/bin/deploy-pusher /usr/local/bin/deploy-pusher
 ```
 
 ### How to use
@@ -20,7 +22,7 @@ DEPLOY_HOST={DEFINE_YOUR_NODE_DEPLOY_SERVER} SECRET={DEFINE_YOUR_SECRET} DIST={R
 * `SECRET`      - Secret key to encrypt json payload.
 * `DEPLOY_HOST` - Server you want to deploy!
 
-### Support CI platform
+### Supported CI platform
 * TravisCI
 * Jenkins
 * CircleCI

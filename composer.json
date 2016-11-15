@@ -1,6 +1,6 @@
 {
     "name": "capslock-studio/node-deploy-server-php-pusher",
-    "description": "A deployment tool for node-deploy-server written in PHP.",
+    "description": "Lightweight cross platform self-hosted deployment server solution client in PHP.",
     "license": "MIT",
     "authors": [
         {
