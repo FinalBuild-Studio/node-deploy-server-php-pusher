@@ -10,6 +10,16 @@ composer global require capslock-studio/node-deploy-server-php-pusher dev-master
 DEPLOY_HOST={DEFINE_YOUR_NODE_DEPLOY_SERVER} SECRET={DEFINE_YOUR_SECRET} DIST={REMOTE_SERVER_DEPLOY_PATH} deploy-pusher [PARAMETER_WITH_DOUBLE_DASH]
 ```
 
+### Shell Parameters
+* `--tag`      - Specify the tag you want to deploy
+* `--rollback` - Rollback to the previous version
+* `--config`   - Load parameter from JSON file
+* `--command`  - Command you will execute after deploy successfully.
+
+### ENV
+* `SECRET`      - Secret key to encrypt json payload.
+* `DEPLOY_HOST` - Server you want to deploy!
+
 ### Support CI platform
 * TravisCI
 * Jenkins
