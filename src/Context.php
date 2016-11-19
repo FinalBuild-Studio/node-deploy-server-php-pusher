@@ -28,9 +28,9 @@ class Context
                 "header"        => [
                     "Content-type: application/json",
                 ],
-                "ignore_errors" => true
-            ],
-            "timeout" => 60
+                "ignore_errors" => true,
+                "timeout"       => 60
+            ]
         ];
 
         $this->opts["http"]["header"][] = "x-hub-signature: sha1={$hash}";
