@@ -30,7 +30,7 @@ set DIST={REMOTE_SERVER_DEPLOY_PATH}
 ### ENV
 * `SECRET`      - Secret key to encrypt json payload.
 * `DEPLOY_HOST` - Server you want to deploy!
-* `RETRIVE`     - Folders you want to keep.
+* `IGNORE`      - Folders you want to keep.
 
 ### Supported CI platform
 * TravisCI
