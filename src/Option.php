@@ -20,6 +20,7 @@ class Option
         $opt = getopt(null, $this->keys($default));
         $opt = array_merge($default, $opt);
 
+        $opt["config"]   = $opt["config"] ?: ".node-deply-server-setting.json";
         $opt["rollback"] = !$opt["rollback"];
         $opt["tag"]      = $opt["rollback"] ? false : $opt["tag"];
 
