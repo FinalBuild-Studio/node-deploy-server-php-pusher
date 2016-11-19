@@ -28,11 +28,11 @@ set DIST={REMOTE_SERVER_DEPLOY_PATH}
 * `--rollback` - Rollback to the previous version
 * `--config`   - Load parameter from JSON file
 * `--command`  - Command you will execute after deploy successfully.
+* `--ignore`   - Folders you want to keep.
 
 ### ENV
 * `SECRET`      - Secret key to encrypt json payload.
 * `DEPLOY_HOST` - Server you want to deploy!
-* `IGNORE`      - Folders you want to keep.
 
 ### Supported CI platform
 * TravisCI

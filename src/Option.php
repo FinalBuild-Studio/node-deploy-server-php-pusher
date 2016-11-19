@@ -13,6 +13,7 @@ class Option
             "config"   => "",
             "tag"      => "",
             "command"  => "",
+            "ignore"   => "",
             "rollback" => true,
         ];
 
@@ -28,14 +29,11 @@ class Option
         $owner = Git::extract()->getOwner();
         $repo  = Git::extract()->getRepo();
 
-        $dist   = getenv("DIST") ?: "";
-        $ignore = getenv("IGNORE") ?: "";
-        $ignore = explode(",", $ignore);
+        $dist = getenv("DIST") ?: "";
 
         $json["dist"]   = $dist;
         $json["owner"]  = $owner;
         $json["repo"]   = $repo;
-        $json["ignore"] = $ignore;
 
         return $json;
     }
