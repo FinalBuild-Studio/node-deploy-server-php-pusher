@@ -1,5 +1,6 @@
 # node-deploy-server-php-pusher
 [![Build Status](https://travis-ci.org/CapsLock-Studio/node-deploy-server-php-pusher.svg)](https://travis-ci.org/CapsLock-Studio/node-deploy-server-php-pusher)
+[![Coverage Status](https://coveralls.io/repos/github/CapsLock-Studio/node-deploy-server-php-pusher/badge.svg)](https://coveralls.io/github/CapsLock-Studio/node-deploy-server-php-pusher)
 
 ### Installation
 ```sh
