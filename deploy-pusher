@@ -36,7 +36,7 @@ $deploy  = explode(",", $deploy);
 
 foreach ($deploy as $host) {
     echo "host: {$host}, deploying ...", PHP_EOL;
-    $header = (new Context())->set($json)->execute($host)->getHeder();
+    $header = (new Context())->set($json)->execute($host)->getHeader();
     switch (true) {
         case $header->isFatal():
         case $header->isError():

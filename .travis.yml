@@ -1,0 +1,16 @@
+# Travis CI configuration file.
+
+language: php
+
+php:
+    - 5.6
+    - 7.0
+
+before_script:
+    - composer install
+
+script:
+    - vendor/bin/codecept run unit --coverage-xml clover.xml
+
+after_success:
+    - php vendor/bin/coveralls -x tests/_output/clover.xml

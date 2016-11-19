@@ -47,7 +47,7 @@ class Context
         return $this;
     }
 
-    public function getHeder()
+    public function getHeader()
     {
         return new Header($this->header);
     }
