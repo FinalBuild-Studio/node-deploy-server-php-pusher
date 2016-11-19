@@ -28,11 +28,14 @@ class Option
         $owner = Git::extract()->getOwner();
         $repo  = Git::extract()->getRepo();
 
-        $dist = getenv("DIST");
+        $dist    = getenv("DIST") ?: "";
+        $retrive = getenv("RETRIVE") ?: "";
+        $retrive = explode(",", $retrive);
 
-        $json["dist"]  = $dist;
-        $json["owner"] = $owner;
-        $json["repo"]  = $repo;
+        $json["dist"]    = $dist;
+        $json["owner"]   = $owner;
+        $json["repo"]    = $repo;
+        $json["retrive"] = $retrive;
 
         return $json;
     }
