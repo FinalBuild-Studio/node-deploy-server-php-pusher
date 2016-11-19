@@ -1,4 +1,5 @@
 # node-deploy-server-php-pusher
+[![Build Status](https://travis-ci.org/CapsLock-Studio/node-deploy-server-php-pusher.svg)](https://travis-ci.org/CapsLock-Studio/node-deploy-server-php-pusher)
 
 ### Installation
 ```sh
