@@ -27,8 +27,8 @@ set DIST={REMOTE_SERVER_DEPLOY_PATH}
 * `--tag`      - Specify the tag you want to deploy
 * `--rollback` - Rollback to the previous version
 * `--config`   - Load parameter from JSON file
-* `--command`  - Command you will execute after deploy successfully.
-* `--ignore`   - Folders you want to keep.
+* `--command`  - Commands you will execute after deploy successfully.(multiple)
+* `--ignore`   - Folders you want to keep.(multiple)
 
 ### ENV
 * `SECRET`      - Secret key to encrypt json payload.
