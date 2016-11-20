@@ -1,3 +1,5 @@
 /vendor/
 
 tests/_output/*
+
+build/*
